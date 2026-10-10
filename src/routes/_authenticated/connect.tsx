@@ -15,7 +15,7 @@ import { splitRemaining, normalizeKePhone, MPESA_PAYBILL_DISPLAY } from "@/lib/w
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/connect")({
-  validateSearch: (s: Record<string, unknown>) => ({ pkg: typeof s.pkg === "string" ? s.pkg : undefined }),
+  validateSearch: (s: Record<string, unknown>): { pkg?: string } => (typeof s.pkg === "string" ? { pkg: s.pkg } : {}),
   head: () => ({
     meta: [
       { title: "My WiFi — PeakWiFi" },

@@ -81,7 +81,7 @@ function Landing() {
           {isLoading
             ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-[72px] rounded-2xl" />)
             : packages?.map((p) => (
-                <Link key={p.id} to={cta} search={{ pkg: p.id } as never}>
+                <Link key={p.id} to={cta} search={signedIn ? { pkg: p.id } : undefined}>
                   <PackageCard pkg={p} />
                 </Link>
               ))}
