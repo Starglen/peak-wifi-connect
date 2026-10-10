@@ -14,7 +14,107 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      packages: {
+        Row: {
+          devices: number
+          duration_minutes: number
+          id: string
+          name: string
+          popular: boolean
+          price_kes: number
+          sort: number
+          tagline: string | null
+        }
+        Insert: {
+          devices?: number
+          duration_minutes: number
+          id: string
+          name: string
+          popular?: boolean
+          price_kes: number
+          sort?: number
+          tagline?: string | null
+        }
+        Update: {
+          devices?: number
+          duration_minutes?: number
+          id?: string
+          name?: string
+          popular?: boolean
+          price_kes?: number
+          sort?: number
+          tagline?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          amount_kes: number
+          created_at: string
+          expires_at: string | null
+          id: string
+          mpesa_ref: string | null
+          package_id: string
+          phone: string
+          starts_at: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount_kes: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          mpesa_ref?: string | null
+          package_id: string
+          phone: string
+          starts_at?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount_kes?: number
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          mpesa_ref?: string | null
+          package_id?: string
+          phone?: string
+          starts_at?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
