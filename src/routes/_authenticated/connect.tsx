@@ -122,7 +122,7 @@ function Connect() {
           </>
         ) : (
           <>
-            <p className="text-sm text-muted-foreground">{name ? `Hi ${name} 👋` : "Hi there 👋"}</p>
+            <p className="text-sm text-muted-foreground">{name ? `Hi, ${name}` : "Welcome back"}</p>
             <h2 className="mt-1 text-2xl font-extrabold">No active package</h2>
             <p className="mt-1 text-sm text-muted-foreground">Choose a package to get online.</p>
           </>

@@ -30,7 +30,7 @@ export function NetworkInsights({ online }: { online: boolean }) {
         <div className="relative mt-5 h-24 overflow-hidden border-b" aria-label="Download speed chart">
           <svg viewBox="0 0 400 96" preserveAspectRatio="none" className="h-full w-full" aria-hidden="true">
             {[24, 48, 72].map(y => <line key={y} x1="0" x2="400" y1={y} y2={y} className="stroke-border" strokeDasharray="3 5" />)}
-            {points && <polyline points={points} fill="none" className="stroke-accent" strokeWidth="2" vectorEffect="non-scaling-stroke" />}
+            {points && <polyline points={network.samples.length === 1 ? `0,${88 - speed / max * 72} 400,${88 - speed / max * 72}` : points} fill="none" className="stroke-accent" strokeWidth="2" vectorEffect="non-scaling-stroke" />}
           </svg>
           {!network.samples.length && <p className="absolute inset-0 grid place-items-center text-[11px] text-muted-foreground">{network.running ? "Connecting to test server…" : "No measurement yet"}</p>}
         </div>
