@@ -47,7 +47,7 @@ function Connect() {
   useEffect(() => {
     supabase.from("profiles").select("full_name, phone").maybeSingle().then(({ data }) => {
       if (data?.phone) setPhone("0" + data.phone.slice(3));
-      if (data?.full_name) setName(data.full_name.split(" ")[0]);
+      if (data?.full_name) setName(data.full_name.split(" ")[0] ?? "");
     });
   }, []);
 
