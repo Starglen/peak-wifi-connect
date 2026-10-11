@@ -15,7 +15,7 @@ import { splitRemaining, normalizeKePhone, MPESA_PAYBILL_DISPLAY } from "@/lib/w
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/connect")({
-  validateSearch: (s: Record<string, unknown>): { pkg?: string } => (typeof s.pkg === "string" ? { pkg: s.pkg } : {}),
+  validateSearch: (s: Record<string, unknown>): { pkg?: string } => (typeof s['pkg'] === "string" ? { pkg: s['pkg'] as string } : {}),
   head: () => ({
     meta: [
       { title: "My WiFi — PeakWiFi" },
@@ -37,7 +37,7 @@ function Connect() {
   const qc = useQueryClient();
   const session = useWifiSession();
   const { data: packages, isLoading } = useQuery(packagesQuery);
-  const [selected, setSelected] = useState<string | undefined>(preselect);
+  const [selected, setSelected] = useState<string | undefined>(preselect ?? undefined);
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [stage, setStage] = useState<Stage>("idle");
@@ -55,7 +55,7 @@ function Connect() {
 
   async function pay() {
     if (!pkg) return;
-    if (!normalizeKePhone(phone)) return toast.error("Enter a valid M-Pesa number");
+    if (!normalizeKePhone(phone)) { toast.error("Enter a valid M-Pesa number"); return; }
     setStage("sending");
     try {
       const { purchaseId } = await start({ data: { packageId: pkg.id, phone } });
