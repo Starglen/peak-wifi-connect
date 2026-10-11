@@ -3,11 +3,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { CheckCircle2, Loader2, LogOut, Smartphone, WifiOff, RefreshCw } from "lucide-react";
+import { CheckCircle2, Loader2, LogOut, Smartphone, WifiOff, RefreshCw, Wifi, Clock3, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Logo, PackageCard } from "@/components/peak/brand";
+import { NetworkInsights } from "@/components/peak/network-insights";
 import { packagesQuery, getPortalParams } from "@/lib/packages";
 import { useWifiSession } from "@/hooks/use-wifi-session";
 import { initiatePayment, confirmPayment } from "@/lib/wifi.functions";
@@ -19,9 +20,9 @@ export const Route = createFileRoute("/_authenticated/connect")({
   head: () => ({
     meta: [
       { title: "My WiFi — PeakWiFi" },
-      { name: "description", content: "Your time remaining and packages." },
+      { name: "description", content: "View your PeakWiFi connection, remaining time, page data activity and download speed, and add a package." },
       { property: "og:title", content: "My WiFi — PeakWiFi" },
-      { property: "og:description", content: "Check time remaining and top up with M-Pesa." },
+      { property: "og:description", content: "Your PeakWiFi connection details, speed measurements and M-Pesa packages in one place." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -63,7 +64,8 @@ function Connect() {
       // DEMO: simulate the customer approving the STK prompt.
       await new Promise((r) => setTimeout(r, 3500));
       const { expiresAt } = await confirm({ data: { purchaseId } });
-      session.applyExpiry(expiresAt!, pkg.name);
+      if (!expiresAt) throw new Error("No connection expiry received. Please refresh your session.");
+      session.applyExpiry(expiresAt, pkg.name);
       setStage("success");
       const portal = getPortalParams();
       const loginUrl = portal["link-login-only"] || portal["link-login"];
@@ -87,38 +89,42 @@ function Connect() {
   const synced = session.syncedAt ? new Date(session.syncedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : null;
 
   return (
-    <div className="mx-auto max-w-md px-5 pb-40">
-      <header className="flex items-center justify-between py-5">
+    <div className="mx-auto max-w-md px-5 pb-40 lg:max-w-6xl lg:px-8">
+      <header className="flex items-center justify-between border-b py-5">
         <Logo />
-        <Button variant="ghost" size="icon" onClick={signOut} aria-label="Sign out"><LogOut /></Button>
+        <div className="flex items-center gap-4"><span className="hidden text-xs text-muted-foreground sm:block">{name ? `Hi, ${name}` : "My account"}</span><Button variant="ghost" size="icon" onClick={signOut} aria-label="Sign out" title="Sign out"><LogOut /></Button></div>
       </header>
 
+      <div className="mb-6 mt-8 flex items-end justify-between gap-3"><div><p className="text-xs font-medium text-accent">YOUR CONNECTION</p><h1 className="mt-2 text-2xl font-extrabold lg:text-3xl">My PeakWiFi</h1></div><span className="flex items-center gap-1.5 pb-1 text-xs text-muted-foreground"><ShieldCheck className="size-4 text-accent" />{session.online ? "Online" : "Offline"}</span></div>
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
       {/* Status */}
-      <section className="glass relative overflow-hidden rounded-3xl p-6 text-center">
+      <section className="glass relative min-w-0 overflow-hidden rounded-lg p-5 sm:p-7" aria-label="Connection details">
+        <div className="mb-5 flex items-center justify-between"><h2 className="flex items-center gap-2 text-sm font-semibold"><Wifi className="size-4 text-primary" />Current package</h2>{session.online && <Button variant="ghost" size="icon" onClick={() => session.sync()} aria-label="Refresh connection" title="Refresh connection"><RefreshCw className="size-3.5" /></Button>}</div>
         {!session.loaded ? (
           <Skeleton className="mx-auto h-24 w-48" />
         ) : session.active ? (
           <>
-            <div className="mx-auto flex w-fit items-center gap-2 rounded-full bg-success/15 px-3 py-1 text-xs font-semibold text-success">
+            <div className="flex w-fit max-w-full items-center gap-2 rounded-full bg-success/15 px-3 py-1 text-xs font-semibold text-success">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full rounded-full bg-success animate-pulse-ring" />
                 <span className="relative inline-flex size-2 rounded-full bg-success" />
               </span>
-              Connected · {session.packageName}
+              Package active · {session.packageName}
             </div>
-            <div className="mt-5 flex items-end justify-center gap-1 font-extrabold tracking-tight">
+            <p className="mt-6 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="size-3.5" />Time remaining</p>
+            <div className="mt-2 flex flex-wrap items-end gap-1 font-extrabold">
               {t.d > 0 && <Unit v={t.d} l="d" />}
               <Unit v={t.h} l="h" /><Unit v={t.m} l="m" /><Unit v={t.s} l="s" />
             </div>
             <p className="mt-2 text-xs text-muted-foreground">
-              Expires {new Date(session.expiresAt!).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" })}
+              Expires {session.expiresAt ? new Date(session.expiresAt).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "—"}
             </p>
           </>
         ) : (
           <>
             <p className="text-sm text-muted-foreground">{name ? `Hi ${name} 👋` : "Hi there 👋"}</p>
-            <h1 className="mt-1 text-2xl font-extrabold tracking-tight">No active package</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Pick one below to get online.</p>
+            <h2 className="mt-1 text-2xl font-extrabold">No active package</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Choose a package to get online.</p>
           </>
         )}
         {!session.online && synced && (
@@ -126,16 +132,12 @@ function Connect() {
             <WifiOff className="size-3" /> Offline · last synced {synced}
           </p>
         )}
-        {session.online && (
-          <button onClick={() => session.sync()} className="absolute right-3 top-3 text-muted-foreground" aria-label="Refresh">
-            <RefreshCw className="size-3.5" />
-          </button>
-        )}
+        <NetworkInsights online={session.online} />
       </section>
 
       {/* Packages */}
-      <section className="mt-8">
-        <h2 className="font-bold">{session.active ? "Add more time" : "Choose a package"}</h2>
+      <section className="min-w-0" aria-label="WiFi packages">
+        <div className="flex items-center justify-between"><h2 className="text-lg font-bold">{session.active ? "Add more time" : "Choose a package"}</h2><span className="text-[11px] text-muted-foreground">M-PESA</span></div>
         {session.active && <p className="text-xs text-muted-foreground">New time is added on top of what's left.</p>}
         <div className="mt-3 space-y-3">
           {isLoading
@@ -144,7 +146,9 @@ function Connect() {
                 <PackageCard key={p.id} pkg={p} selected={selected === p.id} onSelect={() => setSelected(p.id)} />
               ))}
         </div>
+        <div className="mt-5 flex items-center gap-2 border-t pt-4 text-xs text-muted-foreground"><ShieldCheck className="size-4 shrink-0 text-accent" />No voucher codes. Your time starts after payment.</div>
       </section>
+      </div>
 
       {/* Pay sheet */}
       {pkg && stage === "idle" && (
@@ -194,8 +198,8 @@ function Connect() {
 function Unit({ v, l }: { v: number; l: string }) {
   return (
     <span className="flex items-baseline">
-      <span className="text-5xl tabular-nums">{String(v).padStart(2, "0")}</span>
-      <span className="mr-2 text-lg text-muted-foreground">{l}</span>
+      <span className="text-4xl tabular-nums sm:text-5xl">{String(v).padStart(2, "0")}</span>
+      <span className="mr-1 text-sm text-muted-foreground sm:mr-2 sm:text-lg">{l}</span>
     </span>
   );
 }

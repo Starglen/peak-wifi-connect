@@ -15,3 +15,4 @@
 - New package time stacks on the latest active expiry (`computeExpiry` in src/lib/wifi.ts) — single source of truth, covered by tests.
 - Payment confirmation is currently simulated (`confirmPayment`); the real M-Pesa Daraja callback must replace it via a `/api/public/` route that verifies the provider.
 - Captive-portal params (mac, ip, link-login) are captured on landing and used to hand off to the router after payment.
+- Network insights stay browser-side: report observed page transfers separately from unavailable router-wide usage, and measure speed with a bounded external download, never simulated values — browser APIs cannot observe all device traffic.

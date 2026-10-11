@@ -3,6 +3,7 @@ import { Wifi } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 import { formatDuration } from "@/lib/wifi";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export function Logo() {
   return (
@@ -19,11 +20,13 @@ export function PackageCard({
   pkg, selected, onSelect,
 }: { pkg: Tables<"packages">; selected?: boolean; onSelect?: () => void }) {
   return (
-    <button
+    <Button
       type="button"
+      variant="ghost"
       onClick={onSelect}
+      aria-pressed={selected ?? false}
       className={cn(
-        "glass relative flex w-full items-center justify-between rounded-2xl p-4 text-left transition-all active:scale-[0.99]",
+        "glass relative flex h-auto min-h-20 w-full items-center justify-between gap-3 whitespace-normal rounded-lg p-4 text-left transition-all active:scale-[0.99]",
         selected ? "ring-2 ring-primary" : "hover:bg-secondary",
       )}
     >
@@ -32,15 +35,15 @@ export function PackageCard({
           Popular
         </span>
       )}
-      <div>
+      <div className="min-w-0">
         <div className="font-semibold">{pkg.name}</div>
         <div className="text-xs text-muted-foreground">
           {formatDuration(pkg.duration_minutes)} · {pkg.devices} device{pkg.devices > 1 ? "s" : ""} · {pkg.tagline}
         </div>
       </div>
-      <div className="text-right">
-        <div className="text-lg font-bold">KES {pkg.price_kes}</div>
+      <div className="shrink-0 text-right">
+        <div className="text-base font-bold">KES {pkg.price_kes}</div>
       </div>
-    </button>
+    </Button>
   );
 }
