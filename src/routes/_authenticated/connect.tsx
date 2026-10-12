@@ -87,6 +87,9 @@ function Connect() {
 
   const t = splitRemaining(session.remainingMs);
   const synced = session.syncedAt ? new Date(session.syncedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : null;
+  const expiry = session.expiresAt ? new Date(session.expiresAt) : null;
+  const expiryDate = expiry?.toLocaleDateString("en-KE", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const expiryTime = expiry?.toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
 
   return (
     <div className="mx-auto max-w-md px-5 pb-40 lg:max-w-6xl lg:px-8">
@@ -109,16 +112,18 @@ function Connect() {
                 <span className="absolute inline-flex size-full rounded-full bg-success animate-pulse-ring" />
                 <span className="relative inline-flex size-2 rounded-full bg-success" />
               </span>
-              Package active · {session.packageName}
+              Package active
+            </div>
+            <div className="mt-5 grid grid-cols-2 gap-4 border-y py-4">
+              <div><p className="text-[11px] text-muted-foreground">Active plan</p><p className="mt-1 truncate font-bold">{session.packageName ?? "WiFi package"}</p></div>
+              <div className="border-l pl-4"><p className="text-[11px] text-muted-foreground">Status</p><p className="mt-1 font-bold text-success">Connected</p></div>
             </div>
             <p className="mt-6 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="size-3.5" />Time remaining</p>
             <div className="mt-2 flex flex-wrap items-end gap-1 font-extrabold">
               {t.d > 0 && <Unit v={t.d} l="d" />}
               <Unit v={t.h} l="h" /><Unit v={t.m} l="m" /><Unit v={t.s} l="s" />
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Expires {session.expiresAt ? new Date(session.expiresAt).toLocaleString([], { weekday: "short", hour: "2-digit", minute: "2-digit" }) : "—"}
-            </p>
+            <div className="mt-4 border-l-2 border-accent pl-3"><p className="text-[11px] text-muted-foreground">Plan expires</p><p className="mt-1 text-sm font-semibold">{expiryDate ?? "—"}</p><p className="mt-0.5 text-xs text-muted-foreground">{expiryTime ?? ""}</p></div>
           </>
         ) : (
           <>
