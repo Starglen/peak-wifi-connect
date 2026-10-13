@@ -1,4 +1,8 @@
 # Connection details upgrade
+- [ ] Replace page counter with router-ready account usage and connected-device management.
+- [ ] Verify real speed test, cancellation and offline states.
+- [ ] Refresh scrolling website with supplied plans, coverage, support and contacts; route signed-in arrivals to Connect.
+- [ ] Add standalone animated wave background and verify desktop/mobile.
 - [x] Expand desktop connection details on the left, with compact packages on the right.
 - [x] Add honest live page-transfer counters and a working download speed / latency test.
 - [x] Verify signed-in flow, mobile layout, and measurement tests.
