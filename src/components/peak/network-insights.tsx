@@ -2,8 +2,9 @@ import { Activity, ArrowDown, ArrowUp, Gauge, Loader2, Play, Radio, Square } fro
 import { Button } from "@/components/ui/button";
 import { useNetworkInsights } from "@/hooks/use-network-insights";
 import { formatBytes } from "@/lib/network";
+import { accountConsumedBytes, type AccountNetworkSnapshot } from "@/lib/router-accounting";
 
-export function NetworkInsights({ online }: { online: boolean }) {
+export function NetworkInsights({ online, snapshot = null }: { online: boolean; snapshot?: AccountNetworkSnapshot | null }) {
   const network = useNetworkInsights();
   const speed = network.result?.mbps ?? network.liveMbps;
   const max = Math.max(10, ...network.samples);
@@ -12,14 +13,14 @@ export function NetworkInsights({ online }: { online: boolean }) {
   return (
     <div className="mt-7 border-t pt-6">
       <div className="flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-sm font-semibold"><Activity className="size-4 text-primary" /> Data activity</h2>
-        <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground"><span className={`size-1.5 rounded-full ${online ? "bg-success" : "bg-warning"}`} />{online ? "Live page activity" : "Offline"}</span>
+        <h2 className="flex items-center gap-2 text-sm font-semibold"><Activity className="size-4 text-primary" /> Account data usage</h2>
+        <span className="text-[11px] text-muted-foreground">{snapshot ? "Router reported" : "Not linked"}</span>
       </div>
       <div className="mt-5 grid grid-cols-2 gap-5">
-        <div><p className="text-[11px] text-muted-foreground">This page · since opened</p><p className="mt-1 text-3xl font-bold tabular-nums" aria-live="off">{formatBytes(network.bytes)}</p><p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground"><ArrowDown className="size-3 text-primary" /> Received · includes speed tests</p></div>
-        <div className="border-l pl-5"><p className="text-[11px] text-muted-foreground">Total device usage</p><p className="mt-1 text-3xl font-bold text-muted-foreground">—</p><p className="mt-2 text-xs text-muted-foreground">Router not linked</p></div>
+        <div><p className="text-[11px] text-muted-foreground">Total consumed · all devices</p><p className="mt-1 text-3xl font-bold tabular-nums" aria-live="off">{snapshot ? formatBytes(accountConsumedBytes(snapshot)) : "—"}</p><p className="mt-2 text-xs text-muted-foreground">Download + upload</p></div>
+        <div className="border-l pl-5"><p className="text-[11px] text-muted-foreground">Received / sent</p><p className="mt-2 text-sm font-semibold">{snapshot ? formatBytes(snapshot.receivedBytes) : "—"} / {snapshot ? formatBytes(snapshot.sentBytes) : "—"}</p><p className="mt-2 text-xs text-muted-foreground">Across your account</p></div>
       </div>
-      <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">Page counter covers browser-reported transfers only, not other apps or all device traffic. Full usage awaits router accounting.</p>
+      <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">{snapshot ? `Last reported ${new Date(snapshot.updatedAt).toLocaleString("en-KE")}` : "Your router isn't linked yet. Account totals will appear here once connected."}</p>
 
       <div className="mt-6 border-t pt-6">
         <div className="flex items-center justify-between gap-3"><h2 className="flex items-center gap-2 text-sm font-semibold"><Gauge className="size-4 text-accent" /> Connection speed</h2><span className="text-[11px] text-muted-foreground">{network.phase}</span></div>
