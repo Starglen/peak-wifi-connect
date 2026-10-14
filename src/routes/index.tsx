@@ -2,11 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight, ArrowDown, ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/peak/brand";
+import { SiteHeader } from "@/components/peak/site-header";
 import { capturePortalParams } from "@/lib/packages";
 import { supabase } from "@/integrations/supabase/client";
 import { WaveBackground } from "@/components/peak/wave-background";
-import { SectionNavigation, WebsiteSections } from "@/components/peak/website-sections";
+import { WebsiteSections } from "@/components/peak/website-sections";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,7 +38,7 @@ function Landing() {
 
   return (
     <main>
-      <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur-xl"><div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-5 py-4 lg:px-8"><Logo /><div className="hidden md:block"><SectionNavigation /></div><Button asChild variant="outline" size="sm"><Link to="/auth">{checking ? "My account" : "Sign in"}<ArrowRight /></Link></Button><div className="w-full md:hidden"><SectionNavigation /></div></div></header>
+      <SiteHeader checking={checking} />
       <section className="relative isolate overflow-hidden" aria-label="Broadlink PeakWiFi">
         <WaveBackground />
         <div className="relative mx-auto max-w-6xl px-5 pb-14 pt-16 lg:px-8 lg:pb-20 lg:pt-24">

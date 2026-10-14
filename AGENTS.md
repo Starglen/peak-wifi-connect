@@ -18,4 +18,5 @@
 - Account usage and device controls accept an authenticated router snapshot and disconnect adapter, never browser transfer counts; until integration exists show unavailable states — browsers cannot observe account-wide traffic or disconnect hotspot clients.
 - Connection speed uses a bounded browser download from Cloudflare with cancellation and timeout — never simulate speed results.
 - Public and signed-in views reuse scrolling website sections and a token-colored canvas wave background — keeps navigation and visual identity consistent without duplicated pages.
+- Public and signed-in views share SiteHeader with a focus-managed mobile sheet and right-aligned desktop navigation — keeps scrolling navigation and account actions consistent across screen sizes.
 - Preserve existing package IDs when replacing placeholder plans; route data-capped and home plans to setup support until router enforcement exists — protects purchase references and avoids selling unenforced quotas.

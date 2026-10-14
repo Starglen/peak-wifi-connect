@@ -71,7 +71,11 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
+  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; scrollbar-color: var(--primary) var(--background); scrollbar-width: thin; scrollbar-gutter: stable; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--background); }
+  ::-webkit-scrollbar-thumb { background: var(--gradient-brand); border: 2px solid var(--background); border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
   * { letter-spacing: 0; }
   body {
     background-color: var(--color-background);
@@ -104,7 +108,20 @@
 @utility animate-pulse-ring { animation: pulse-ring 1.6s ease-out infinite; }
 @utility section-kicker { font-size: 0.625rem; font-weight: 700; color: var(--accent); }
 
+.mobile-navigation { padding-bottom: max(1.75rem, env(safe-area-inset-bottom)); }
+.mobile-navigation[data-state="open"] .menu-link { animation: menu-link-enter 550ms both; }
+.mobile-navigation .menu-link:nth-child(2) { animation-delay: 45ms; }
+.mobile-navigation .menu-link:nth-child(3) { animation-delay: 90ms; }
+.mobile-navigation .menu-link:nth-child(4) { animation-delay: 135ms; }
+.mobile-navigation .menu-link:nth-child(5) { animation-delay: 180ms; }
+.section-nav-link { position: relative; }
+.section-nav-link::after { content: ""; position: absolute; bottom: 0; inset-inline: 0; height: 1px; background: var(--gradient-brand); transform: scaleX(0); transform-origin: right; transition: transform 220ms ease; }
+.section-nav-link:hover::after, .section-nav-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+@keyframes menu-link-enter { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
 @media (prefers-reduced-motion: reduce) {
   .animate-pulse-ring { animation: none; }
+  .mobile-navigation, .mobile-navigation .menu-link { animation: none !important; transition: none !important; }
+  .section-nav-link::after { transition: none; }
   html { scroll-behavior: auto; }
 }
