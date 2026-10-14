@@ -9,6 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Logo, PackageCard } from "@/components/peak/brand";
 import { NetworkInsights } from "@/components/peak/network-insights";
+import { AccountDevices } from "@/components/peak/account-devices";
+import { SectionNavigation, WebsiteSections } from "@/components/peak/website-sections";
+import { WaveBackground } from "@/components/peak/wave-background";
+import { SUPPORT_WHATSAPP } from "@/lib/website-plans";
 import { packagesQuery, getPortalParams } from "@/lib/packages";
 import { useWifiSession } from "@/hooks/use-wifi-session";
 import { initiatePayment, confirmPayment } from "@/lib/wifi.functions";
@@ -20,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/connect")({
   head: () => ({
     meta: [
       { title: "My WiFi — PeakWiFi" },
-      { name: "description", content: "View your PeakWiFi connection, remaining time, page data activity and download speed, and add a package." },
+      { name: "description", content: "Manage your PeakWiFi plan, account usage, devices and connection speed, and explore coverage and support." },
       { property: "og:title", content: "My WiFi — PeakWiFi" },
       { property: "og:description", content: "Your PeakWiFi connection details, speed measurements and M-Pesa packages in one place." },
       { property: "og:type", content: "website" },
@@ -53,9 +57,11 @@ function Connect() {
   }, []);
 
   const pkg = packages?.find((p) => p.id === selected);
+  useEffect(() => { if (preselect) setSelected(preselect); }, [preselect]);
 
   async function pay() {
     if (!pkg) return;
+    if (pkg.id === "7d" || pkg.id === "home-monthly") { toast.info("Contact our team to set up this plan."); return; }
     if (!normalizeKePhone(phone)) { toast.error("Enter a valid M-Pesa number"); return; }
     setStage("sending");
     try {
@@ -92,10 +98,12 @@ function Connect() {
   const expiryTime = expiry?.toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
 
   return (
-    <div className="mx-auto max-w-md px-5 pb-40 lg:max-w-6xl lg:px-8">
-      <header className="flex items-center justify-between border-b py-5">
+    <div className="relative isolate mx-auto max-w-md px-5 pb-40 lg:max-w-6xl lg:px-8">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[640px] overflow-hidden"><WaveBackground /></div>
+      <header className="flex flex-wrap items-center justify-between gap-2 border-b py-5">
         <Logo />
         <div className="flex items-center gap-4"><span className="hidden text-xs text-muted-foreground sm:block">{name ? `Hi, ${name}` : "My account"}</span><Button variant="ghost" size="icon" onClick={signOut} aria-label="Sign out" title="Sign out"><LogOut /></Button></div>
+        <div className="w-full"><SectionNavigation /></div>
       </header>
 
       <div className="mb-6 mt-8 flex items-end justify-between gap-3"><div><p className="text-xs font-medium text-accent">YOUR CONNECTION</p><h1 className="mt-2 text-2xl font-extrabold lg:text-3xl">My PeakWiFi</h1></div><span className="flex items-center gap-1.5 pb-1 text-xs text-muted-foreground"><ShieldCheck className="size-4 text-accent" />{session.online ? "Online" : "Offline"}</span></div>
@@ -116,7 +124,7 @@ function Connect() {
             </div>
             <div className="mt-5 grid grid-cols-2 gap-4 border-y py-4">
               <div><p className="text-[11px] text-muted-foreground">Active plan</p><p className="mt-1 truncate font-bold">{session.packageName ?? "WiFi package"}</p></div>
-              <div className="border-l pl-4"><p className="text-[11px] text-muted-foreground">Status</p><p className="mt-1 font-bold text-success">Connected</p></div>
+              <div className="border-l pl-4"><p className="text-[11px] text-muted-foreground">Status</p><p className="mt-1 font-bold text-success">Time available</p></div>
             </div>
             <p className="mt-6 flex items-center gap-1.5 text-xs text-muted-foreground"><Clock3 className="size-3.5" />Time remaining</p>
             <div className="mt-2 flex flex-wrap items-end gap-1 font-extrabold">
@@ -138,6 +146,7 @@ function Connect() {
           </p>
         )}
         <NetworkInsights online={session.online} />
+        <AccountDevices />
       </section>
 
       {/* Packages */}
@@ -154,6 +163,7 @@ function Connect() {
         <div className="mt-5 flex items-center gap-2 border-t pt-4 text-xs text-muted-foreground"><ShieldCheck className="size-4 shrink-0 text-accent" />No voucher codes. Your time starts after payment.</div>
       </section>
       </div>
+      <div className="mt-14"><WebsiteSections signedIn /></div>
 
       {/* Pay sheet */}
       {pkg && stage === "idle" && (
@@ -164,9 +174,7 @@ function Connect() {
               <Input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel"
                 className="h-11 rounded-xl" placeholder="M-Pesa number" />
             </div>
-            <Button variant="hero" size="xl" className="w-full" onClick={pay}>
-              Pay KES {pkg.price_kes} with M-Pesa
-            </Button>
+            {pkg.id === "7d" || pkg.id === "home-monthly" ? <><p className="text-xs text-muted-foreground">{pkg.id === "7d" ? "The 2GB limit requires router setup before activation." : "Confirm home coverage and installation with our team."}</p><Button asChild variant="hero" size="xl" className="w-full"><a href={`${SUPPORT_WHATSAPP}?text=${encodeURIComponent(`I'd like ${pkg.name}`)}`} target="_blank" rel="noreferrer">Contact team · KES {pkg.price_kes}</a></Button></> : <Button variant="hero" size="xl" className="w-full" onClick={pay}>Pay KES {pkg.price_kes} with M-Pesa</Button>}
           </div>
         </div>
       )}

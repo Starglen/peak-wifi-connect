@@ -39,7 +39,7 @@
 
 :root {
   --radius: 0.875rem;
-  --background: oklch(0.16 0.035 255);
+  --background: oklch(0.145 0.018 245);
   --foreground: oklch(0.97 0.01 240);
   --surface: oklch(0.2 0.04 255);
   --card: oklch(0.21 0.04 255 / 70%);
@@ -71,12 +71,10 @@
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { -webkit-tap-highlight-color: transparent; }
+  html { -webkit-tap-highlight-color: transparent; scroll-behavior: smooth; }
   * { letter-spacing: 0; }
   body {
     background-color: var(--color-background);
-    background-image: var(--gradient-glow);
-    background-repeat: no-repeat;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "tnum" 1;
@@ -104,7 +102,9 @@
   100% { transform: scale(1.6); opacity: 0; }
 }
 @utility animate-pulse-ring { animation: pulse-ring 1.6s ease-out infinite; }
+@utility section-kicker { font-size: 0.625rem; font-weight: 700; color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-pulse-ring { animation: none; }
+  html { scroll-behavior: auto; }
 }

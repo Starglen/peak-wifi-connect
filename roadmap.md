@@ -1,11 +1,13 @@
 # Connection details upgrade
-- [ ] Replace page counter with router-ready account usage and connected-device management.
-- [ ] Verify real speed test, cancellation and offline states.
-- [ ] Refresh scrolling website with supplied plans, coverage, support and contacts; route signed-in arrivals to Connect.
-- [ ] Add standalone animated wave background and verify desktop/mobile.
+- [x] Use the uploaded PeakWiFi logo in header/footer and favicon; polish mobile and desktop navigation.
+- [x] Document likely MikroTik router integration without pretending it is connected.
+- [x] Replace page counter with router-ready account usage and connected-device management.
+- [x] Verify real speed test, cancellation and offline states.
+- [x] Refresh scrolling website with supplied plans, coverage, support and contacts; route signed-in arrivals to Connect.
+- [x] Add standalone animated wave background and verify desktop/mobile.
 - [x] Expand desktop connection details on the left, with compact packages on the right.
-- [x] Add honest live page-transfer counters and a working download speed / latency test.
+- [x] Replace former page-transfer counter with account-only usage and retain a working speed / latency test.
 - [x] Verify signed-in flow, mobile layout, and measurement tests.
-- [ ] Full hotspot/device traffic requires a router accounting integration (not currently connected).
+- [ ] Live account totals, device counts and remote disconnect require router accounting integration (blocked: user will supply/configure likely MikroTik router; no connection credentials yet).
 - [x] Show the active plan name and a complete, unambiguous expiry date including the year.
 - [ ] Publish the code to github.com/Starglen/PeakWfi (blocked: the user must finish Plus (+) -> GitHub -> Connect project -> Create Repository in the Lovable editor; the empty PeakWfi repo was renamed to PeakWfi-old so the name is free).

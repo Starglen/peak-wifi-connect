@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Check, MapPin, Phone, Mail, ArrowRight, Wifi, CreditCard, Headphones, House } from "lucide-react";
+import { ArrowUpRight, Check, MapPin, Phone, Mail, ArrowRight, Wifi, CreditCard, Headphones } from "lucide-react";
+import { Logo } from "@/components/peak/brand";
 import { Button } from "@/components/ui/button";
 import { websitePlans, SUPPORT_WHATSAPP } from "@/lib/website-plans";
 
@@ -37,6 +38,6 @@ export function WebsiteSections({ signedIn = false }: { signedIn?: boolean }) {
         <a className="flex items-center gap-3 hover:text-accent" href="tel:+254798091838"><Phone className="size-4 text-accent" />+254 798 091 838</a><a className="flex items-center gap-3 hover:text-accent" href="tel:+254758412300"><Phone className="size-4 text-accent" />+254 758 412 300</a><a className="flex items-center gap-3 break-all hover:text-accent" href="mailto:info@broadlinkpeakwifi.co.ke"><Mail className="size-4 shrink-0 text-accent" />info@broadlinkpeakwifi.co.ke</a><p className="flex items-center gap-3"><MapPin className="size-4 text-accent" />Kwa Vonza, Kitui</p>
       </div></div>
     </section>
-    <footer className="flex flex-wrap items-center justify-between gap-4 border-t py-7 text-[11px] text-muted-foreground"><span>© {new Date().getFullYear()} Broadlink PeakWiFi</span><span className="flex items-center gap-2"><Check className="size-3 text-accent" />Reliable. Affordable. Always connected.</span></footer>
+    <footer className="border-t py-8"><div className="flex flex-wrap items-center justify-between gap-5"><Logo /><SectionNavigation /></div><div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t pt-5 text-[11px] text-muted-foreground"><span>© {new Date().getFullYear()} Broadlink PeakWiFi</span><span className="flex items-center gap-2"><Check className="size-3 text-accent" />Reliable. Affordable. Always connected.</span></div></footer>
   </div>;
 }
