@@ -1,4 +1,6 @@
 # Connection details upgrade
+- [ ] Use the uploaded PeakWiFi logo in header/footer and favicon; polish mobile and desktop navigation.
+- [ ] Document likely MikroTik router integration without pretending it is connected.
 - [ ] Replace page counter with router-ready account usage and connected-device management.
 - [ ] Verify real speed test, cancellation and offline states.
 - [ ] Refresh scrolling website with supplied plans, coverage, support and contacts; route signed-in arrivals to Connect.
