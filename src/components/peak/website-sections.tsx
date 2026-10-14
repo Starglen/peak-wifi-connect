@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { websitePlans, SUPPORT_WHATSAPP } from "@/lib/website-plans";
 
 export function SectionNavigation() {
-  return <nav aria-label="Explore PeakWiFi" className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-muted-foreground">
-    {["Packages", "Coverage", "Support", "Contact", "Sales"].map(label => <Button key={label} variant="link" size="sm" asChild className="h-8 px-0 text-muted-foreground"><a href={`#${label.toLowerCase()}`}>{label}</a></Button>)}
+  return <nav aria-label="Explore PeakWiFi" className="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-muted-foreground lg:justify-end">
+    {["Packages", "Coverage", "Support", "Contact", "Sales"].map(label => <Button key={label} variant="link" size="sm" asChild className="section-nav-link h-8 px-0 text-muted-foreground hover:text-accent hover:no-underline"><a href={`#${label.toLowerCase()}`}>{label}</a></Button>)}
   </nav>;
 }
 

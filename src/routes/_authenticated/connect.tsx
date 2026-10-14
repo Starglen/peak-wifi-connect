@@ -3,14 +3,15 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { CheckCircle2, Loader2, LogOut, Smartphone, WifiOff, RefreshCw, Wifi, Clock3, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Loader2, Smartphone, WifiOff, RefreshCw, Wifi, Clock3, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Logo, PackageCard } from "@/components/peak/brand";
+import { PackageCard } from "@/components/peak/brand";
+import { SiteHeader } from "@/components/peak/site-header";
 import { NetworkInsights } from "@/components/peak/network-insights";
 import { AccountDevices } from "@/components/peak/account-devices";
-import { SectionNavigation, WebsiteSections } from "@/components/peak/website-sections";
+import { WebsiteSections } from "@/components/peak/website-sections";
 import { WaveBackground } from "@/components/peak/wave-background";
 import { SUPPORT_WHATSAPP } from "@/lib/website-plans";
 import { packagesQuery, getPortalParams } from "@/lib/packages";
@@ -98,14 +99,10 @@ function Connect() {
   const expiryTime = expiry?.toLocaleTimeString("en-KE", { hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
 
   return (
-    <div className="relative isolate mx-auto max-w-md px-5 pb-40 lg:max-w-6xl lg:px-8">
+    <div className="relative isolate pb-40">
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[640px] overflow-hidden"><WaveBackground /></div>
-      <header className="flex flex-wrap items-center justify-between gap-2 border-b py-5">
-        <Logo />
-        <div className="flex items-center gap-4"><span className="hidden text-xs text-muted-foreground sm:block">{name ? `Hi, ${name}` : "My account"}</span><Button variant="ghost" size="icon" onClick={signOut} aria-label="Sign out" title="Sign out"><LogOut /></Button></div>
-        <div className="w-full"><SectionNavigation /></div>
-      </header>
-
+      <SiteHeader signedIn name={name} onSignOut={signOut} />
+      <div className="mx-auto max-w-md px-5 lg:max-w-6xl lg:px-8">
       <div className="mb-6 mt-8 flex items-end justify-between gap-3"><div><p className="text-xs font-medium text-accent">YOUR CONNECTION</p><h1 className="mt-2 text-2xl font-extrabold lg:text-3xl">My PeakWiFi</h1></div><span className="flex items-center gap-1.5 pb-1 text-xs text-muted-foreground"><ShieldCheck className="size-4 text-accent" />{session.online ? "Online" : "Offline"}</span></div>
       <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
       {/* Status */}
@@ -164,6 +161,7 @@ function Connect() {
       </section>
       </div>
       <div className="mt-14"><WebsiteSections signedIn /></div>
+      </div>
 
       {/* Pay sheet */}
       {pkg && stage === "idle" && (
