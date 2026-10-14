@@ -15,4 +15,7 @@
 - New package time stacks on the latest active expiry (`computeExpiry` in src/lib/wifi.ts) — single source of truth, covered by tests.
 - Payment confirmation is currently simulated (`confirmPayment`); the real M-Pesa Daraja callback must replace it via a `/api/public/` route that verifies the provider.
 - Captive-portal params (mac, ip, link-login) are captured on landing and used to hand off to the router after payment.
-- Network insights stay browser-side: report observed page transfers separately from unavailable router-wide usage, and measure speed with a bounded external download, never simulated values — browser APIs cannot observe all device traffic.
+- Account usage and device controls accept an authenticated router snapshot and disconnect adapter, never browser transfer counts; until integration exists show unavailable states — browsers cannot observe account-wide traffic or disconnect hotspot clients.
+- Connection speed uses a bounded browser download from Cloudflare with cancellation and timeout — never simulate speed results.
+- Public and signed-in views reuse scrolling website sections and a token-colored canvas wave background — keeps navigation and visual identity consistent without duplicated pages.
+- Preserve existing package IDs when replacing placeholder plans; route data-capped and home plans to setup support until router enforcement exists — protects purchase references and avoids selling unenforced quotas.

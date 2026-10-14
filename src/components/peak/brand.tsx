@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Wifi } from "lucide-react";
+import logo from "@/assets/peakwifi-logo.png.asset.json";
 import type { Tables } from "@/integrations/supabase/types";
 import { formatDuration } from "@/lib/wifi";
 import { cn } from "@/lib/utils";
@@ -8,10 +8,8 @@ import { Button } from "@/components/ui/button";
 export function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2 font-bold tracking-tight">
-      <span className="grid size-8 place-items-center rounded-xl bg-brand shadow-glow">
-        <Wifi className="size-4 text-primary-foreground" />
-      </span>
-      <span>Peak<span className="text-brand">WiFi</span></span>
+      <img src={logo.url} alt="" width={44} height={44} className="size-11 shrink-0 object-contain" />
+      <span className="leading-tight"><span className="block text-[9px] font-medium uppercase text-muted-foreground">Broadlink</span>Peak<span className="text-accent">WiFi</span></span>
     </Link>
   );
 }
@@ -38,7 +36,7 @@ export function PackageCard({
       <div className="min-w-0">
         <div className="font-semibold">{pkg.name}</div>
         <div className="text-xs text-muted-foreground">
-          {formatDuration(pkg.duration_minutes)} · {pkg.devices} device{pkg.devices > 1 ? "s" : ""} · {pkg.tagline}
+          {formatDuration(pkg.duration_minutes)} · {pkg.tagline}
         </div>
       </div>
       <div className="shrink-0 text-right">
