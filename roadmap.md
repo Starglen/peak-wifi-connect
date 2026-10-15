@@ -1,4 +1,8 @@
 # Connection details upgrade
+- [ ] Simplify Connect and speed testing, reveal details only for active plans, tighten spacing and repair section navigation.
+- [ ] Refine public footer and coverage installation action; add working validated message/feedback form.
+- [ ] Add a safe M-Pesa receipt recovery handoff without granting unverified package time.
+- [ ] Verify public and signed-in navigation, feedback submission and speed testing on desktop/mobile.
 - [x] Refine mobile hamburger navigation, right-align desktop links, and verify animations and themed scrollbar.
 - [x] Use the uploaded PeakWiFi logo in header/footer and favicon; polish mobile and desktop navigation.
 - [x] Document likely MikroTik router integration without pretending it is connected.
