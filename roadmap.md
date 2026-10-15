@@ -1,5 +1,5 @@
 # Connection details upgrade
-- [ ] Refine mobile hamburger navigation, right-align desktop links, and verify animations and themed scrollbar.
+- [x] Refine mobile hamburger navigation, right-align desktop links, and verify animations and themed scrollbar.
 - [x] Use the uploaded PeakWiFi logo in header/footer and favicon; polish mobile and desktop navigation.
 - [x] Document likely MikroTik router integration without pretending it is connected.
 - [x] Replace page counter with router-ready account usage and connected-device management.

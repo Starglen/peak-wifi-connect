@@ -28,7 +28,7 @@ export function SiteHeader({ signedIn = false, checking = false, name = "", onSi
       <div className="ml-auto hidden items-center justify-end gap-7 lg:flex"><SectionNavigation />{signedIn && <span className="text-xs text-muted-foreground">{name ? `Hi, ${name}` : "My account"}</span>}{accountAction}</div>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild><Button variant="ghost" size="icon" className="size-11 shrink-0 lg:hidden" aria-label="Open menu" aria-expanded={open} title="Open menu"><span className="flex w-6 flex-col items-end gap-1.5" aria-hidden="true"><span className="h-0.5 w-6 bg-foreground" /><span className="h-0.5 w-4 bg-accent" /></span></Button></SheetTrigger>
-        <SheetContent side="top" showCloseButton={false} aria-describedby={undefined} className="mobile-navigation flex h-dvh flex-col gap-0 overflow-y-auto border-0 px-5 pb-7 pt-3" onCloseAutoFocus={event => {
+        <SheetContent side="right" showCloseButton={false} aria-describedby={undefined} className="mobile-navigation flex h-dvh w-full flex-col gap-0 overflow-y-auto border-0 px-5 pb-7 pt-3 sm:max-w-md" onCloseAutoFocus={event => {
           if (!target.current) return;
           event.preventDefault();
           const id = target.current;
